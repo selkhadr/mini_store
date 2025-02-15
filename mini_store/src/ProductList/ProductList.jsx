@@ -6,20 +6,25 @@ export default function ProductList()
     const [ProductList, setProductList] = useState([])
 
     const displayProduct = ()=>{
-        return ProductList.map(product=>{
-            return <Product product={product}/>
-        })
+        if (ProductList.length > 0)
+        {
+        return ProductList.map((product, key)=>{
+            return <Product product={product} key={key}/>
+        })}
+        return <tr>
+            <td colSpan={7}>no items </td>
+        </tr>
     }
 
     const getProducts = ()=>{
         const products = fetch('https://fakestoreapi.com/products')
                                 .then(response=>response.json())
-                                .then(response=>console.log(response))
+                                .then(response=>setProductList(response))
     
     }
     useEffect(()=>{
         getProducts();
-        displayProduct();
+        //displayProduct();
     }, []);
     return (
     <div className="container-fluix mx-auto w-75 my-3">
@@ -37,15 +42,7 @@ export default function ProductList()
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td scope="row"></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
+             {displayProduct()}
             </tbody>
         </table>
     </div>)
